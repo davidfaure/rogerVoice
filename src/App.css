@@ -1,38 +1,168 @@
 .App {
   text-align: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-family: "Montserrat", "Comfortaa", Arial, Helvetica, sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Video-Container {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 80vw;
+  background-color: #f7fcfe;
+  background-color: #fff;
+}
+
+.Video-Container-Title {
+  width: 75vw;
+  background-color: #eef2f8;
+  height: 10vh;
+  border-radius: 16px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.Side-Container {
+  width: 20vw;
+  margin: 1% 2% 1% 1%;
+  border-radius: 16px;
+  display: flex;
+  background-color: #eef2f8;
+  flex-direction: column;
+  /* box-shadow: rgba(0, 0, 0, 0.19) 0px 5px 10px, rgba(0, 0, 0, 0.23) 0px 6px 6px; */
+  /* box-shadow: 0 16px 48px 0 rgb(0 55 83 / 13%); */
+}
+
+.Video-Frame-Container {
+  background-color: #eef2f8;
+  border-radius: 16px;
+  width: 75vw;
+  height: 70vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Video-Frame-Remote {
+  /* border: 1px solid green; */
+  width: 40%;
+}
+
+.Video-Frame-User,
+.Video-Frame-Remote {
+  width: 50vw;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.Video-Frame-User video,
+.Video-Frame-Remote video {
+  width: 30vw;
+  height: 65vh;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.Video-Frame-User-Name {
+  border: 1px solid transparent;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50px;
+  padding: 15px;
+  position: absolute;
+  bottom: 6%;
+  left: 12%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 6vw;
+}
+
+.Video-Frame-User-Name-Connected {
+  border: 1px solid #31dcd1;
+  background-color: #31dcd1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.Video-Frame-User-Name-Disconnected {
+  border: 1px solid #eb5757;
+  background-color: #eb5757;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.Video-Frame-User-Name-Border {
+  border: 1px solid #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50px;
+  padding: 15px;
+  position: absolute;
+  bottom: 5%;
+  left: 8%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 6vw;
+}
+
+.Video-Frame-User-Name p,
+.Video-Frame-User-Name-Border p {
   color: white;
+  font-size: 0.7vw;
+  font-weight: 700;
+  margin: 0;
 }
 
-.App-link {
-  color: #61dafb;
+.Audio-Button,
+.Video-Button {
+  width: 4vw;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.Call-Button {
+  width: 4vw;
+  margin: 0px 30px;
+  animation: shakeIt 1s infinite ease-in-out;
+}
+
+.End-Button {
+  width: 5vw;
+  margin: 0px 30px;
+}
+
+.Video-Frame-Control {
+  border-radius: 20px;
+  background-color: #eef2f8;
+  width: 75vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes shakeIt {
+  0% {
+    transform: scale(1);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
