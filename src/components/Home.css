@@ -2,3 +2,212 @@
   width: 100vw;
   height: 100vh;
 }
+
+.Register-Container-Background {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+}
+
+.Register-Container-Blur {
+  position: absolute;
+  filter: blur(2px);
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  animation: modalActionBlur 0.2s ease;
+  animation-fill-mode: forwards;
+}
+@keyframes modalActionBlur {
+  from {
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+}
+
+.Register-Container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: center;
+  text-align: left;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.Home-Container-Header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Home-Container-Header label {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.Home-Container-Header input {
+  border: 1px solid black;
+  padding: 0.8em 0.4em;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: inherit;
+  -webkit-appearance: none;
+  width: 30%;
+}
+.Home-Container-Header input:focus {
+  border: 1px solid transparent;
+  outline-color: hsl(225, 100%, 78%);
+  outline-offset: 2px;
+}
+
+.Home-Container-Header button {
+  border: none;
+  padding: 0.8em 1em;
+  margin-top: 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  background: hsl(225, 100%, 40%);
+  color: hsl(225, 100%, 98%);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  will-change: transform;
+  filter: drop-shadow(0 0 0.75rem hsla(225, 98%, 44%, 0.4));
+  width: 180px;
+  justify-content: center;
+}
+
+.Registration-Form-Container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.Registration-Form-Container label {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.Registration-Form-Container input {
+  border: 1px solid black;
+  padding: 0.8em 0.4em;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: inherit;
+  margin-bottom: 16px;
+  -webkit-appearance: none;
+  width: 30%;
+}
+.Registration-Form-Container input:focus {
+  border: 1px solid transparent;
+  outline-color: hsl(225, 100%, 78%);
+  outline-offset: 2px;
+}
+
+.Registration-Form-Container button {
+  border: none;
+  padding: 0.8em 1em;
+  margin-top: 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  background: hsl(225, 100%, 40%);
+  color: hsl(225, 100%, 98%);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  will-change: transform;
+  filter: drop-shadow(0 0 0.75rem hsla(225, 98%, 44%, 0.4));
+  width: 180px;
+  justify-content: center;
+}
+
+.Registration-Failed {
+  position: absolute;
+  top: 0%;
+  width: 99.9vw;
+  border: 1px solid red;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+}
+
+.Registration-Failed p {
+  color: #fff;
+  font-weight: 700 !important;
+  font-size: 1vw !important;
+}
+
+.Video-Frame-Container {
+  background-color: #eef2f8;
+  border-radius: 16px;
+  width: 100vw;
+  height: 60vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Video-Frame-User {
+  width: 50vw;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid red;
+}
+
+.Video-Frame-User-Solo {
+  width: 100vw;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid red;
+}
+
+.Video-Frame-Remote {
+  width: 50vw;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid red;
+}
+
+.Video-Frame-User video,
+.Video-Frame-Remote video,
+.Video-Frame-User-Solo video {
+  width: 40vw;
+  height: 55vh;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
