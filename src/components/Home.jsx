@@ -23,8 +23,7 @@ const Home = () => {
 
   const [callerName, setCallerName] = React.useState("");
 
-  let outgoingSession;
-  let userAgent;
+  let outgoingSession = null;
 
   const [stream, setStream] = React.useState();
   const [incomingSession, setIncomingSession] = React.useState();
@@ -33,28 +32,19 @@ const Home = () => {
   const [callAccepted, setCallAccepted] = React.useState(false);
   const [registered, setRegistered] = React.useState(false);
   const [registeredError, setRegisteredError] = React.useState(false);
+  const [ua, setUserAgent] = React.useState();
 
   const myVideo = React.useRef();
   const myAudio = React.useRef();
   const userVideo = React.useRef();
 
-  const gotLocalMedia = (stream) => {
-    console.info("Received local media stream");
-    setStream(stream);
-    myVideo.current.srcObject = stream;
-    // myAudio.src = URL.createObjectURL(stream);
-  };
-
-  const captureLocalMedia = () => {
-    console.info("Requesting local video & audio");
-    navigator.webkitGetUserMedia(
-      { audio: true, video: true },
-      gotLocalMedia,
-      (e) => {
-        alert("getUserMedia() error: " + e.name);
-      }
-    );
-  };
+  React.useEffect(() => {
+    if (registeredError) {
+      setTimeout(() => {
+        setRegisteredError(false);
+      }, 2000);
+    }
+  }, [registeredError]);
 
   const initialize = () => {
     const socket = new JsSIP.WebSocketInterface("wss://sip.antisip.com:4443");
@@ -67,9 +57,7 @@ const Home = () => {
       display_name: sessionState.display_name,
     };
 
-    userAgent = new JsSIP.UA(config);
-
-    console.log(userAgent, "ICI");
+    const userAgent = new JsSIP.UA(config);
 
     userAgent.on("registered", (data) => {
       console.info(
@@ -129,9 +117,9 @@ const Home = () => {
         if (data.originator === "remote" && currentSession === null) {
           setCurrentSession(incomingSession);
           setIncomingSession(null);
-          setCallAccepted(true);
           console.info("setCurrentSession - ", currentSession);
         }
+        setCallAccepted(true);
       });
       data.session.on("sdp", (data) => {
         // console.info("onSDP, type - ", data.type, " sdp - ", data.sdp);
@@ -179,6 +167,7 @@ const Home = () => {
       console.info("call register");
     });
     userAgent.start();
+    setUserAgent(userAgent);
   };
 
   React.useEffect(() => {
@@ -206,14 +195,6 @@ const Home = () => {
     }
   }, [registered]);
 
-  React.useEffect(() => {
-    if (registeredError) {
-      setTimeout(() => {
-        setRegisteredError(false);
-      }, 2000);
-    }
-  }, [registeredError]);
-
   const eventHandlers = {
     progress: function (e) {
       console.log("call is in progress");
@@ -236,9 +217,15 @@ const Home = () => {
     },
     eventHandlers: eventHandlers,
   };
+  const [session, setSession] = React.useState();
 
   const connectToCall = () => {
-    outgoingSession = userAgent.call(sessionState.uriToCall, options);
+    outgoingSession = ua.call(sessionState.uriToCall, options);
+  };
+
+  const endCall = () => {
+    ua.stop();
+    window.location.reload();
   };
 
   const answerCall = () => {
@@ -246,10 +233,13 @@ const Home = () => {
       mediaConstraints: { audio: true, video: true },
       // mediaStream: localStream,
     });
+    setCallAccepted(true);
     callData.session.connection.addEventListener("addstream", (event) => {
       console.log("DEBUG: addstream............");
     });
   };
+
+  console.log(callAccepted, "call");
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -257,34 +247,28 @@ const Home = () => {
   };
   return (
     <div className="Home-Container">
-      <h1>Rogervoice Test</h1>
-      {!outgoingSession && (
-        <div className="Home-Container-Header">
-          <label htmlFor="IdToCall">URI to call :</label>
-          <input
-            type="text"
-            name="uriToCall"
-            value={sessionState.uriToCall}
-            onChange={onChange}
-          />
-          <button onClick={connectToCall}>Make a Call </button>
-        </div>
-      )}
+      <h1>Home</h1>
+      <div className="Home-Container-Header">
+        <label htmlForm="uriToCall">URI to call :</label>
+        <input
+          type="text"
+          name="uriToCall"
+          value={sessionState.uriToCall}
+          onChange={onChange}
+        />
+        <button onClick={connectToCall}>Make a Call </button>
+      </div>
       <div className="Video-Frame-Container">
-        <div
-          className={
-            outgoingSession === null
-              ? "Video-Frame-User-Solo"
-              : "Video-Frame-User"
-          }
-        >
+        <div className="Video-Frame-User">
           <video playsInline ref={myVideo} muted autoPlay />
         </div>
-        {outgoingSession !== null && (
-          <div className="Video-Frame-Remote">
-            <video playsInline ref={userVideo} muted autoPlay />
-          </div>
-        )}
+
+        <div className="Video-Frame-Remote">
+          <video playsInline ref={userVideo} muted autoPlay />
+        </div>
+      </div>
+      <div className="Footer-Container">
+        {callAccepted && <button onClick={endCall}>End Call</button>}
       </div>
       {incomingSession && !callAccepted && (
         <>
@@ -294,16 +278,16 @@ const Home = () => {
       )}
       {!registered && (
         <div className="Register-Container-Background">
-          <div className="Register-Container-Blur" />
           {registeredError && (
             <div className="Registration-Failed">
-              <p>Registration failed, password is adminadmin.</p>
+              <p>Registration failed, password is adminadmin</p>
             </div>
           )}
+          <div className="Register-Container-Blur" />
           <div className="Register-Container">
             <h1>Welcome to my rogervoice test</h1>
             <h2>In order to make a call please do the following step :</h2>
-            <div className="Register-Info-Container">
+            <div>
               <ul>
                 <li>
                   Open a new tab on your browser with the same url:
@@ -320,7 +304,7 @@ const Home = () => {
                       efficient)
                     </li>
                     <li>
-                      <b>Name:</b> 'Your choice'
+                      <b>display_name:</b> 'Your choice'
                     </li>
                   </ul>
                 </li>
@@ -335,7 +319,7 @@ const Home = () => {
                       efficient)
                     </li>
                     <li>
-                      <b>Name:</b> 'Your choice'
+                      <b>display_name:</b> 'Your choice'
                     </li>
                   </ul>
                 </li>
@@ -356,21 +340,21 @@ const Home = () => {
             </div>
             <div className="Registration-Form-Container">
               <h1>Registration </h1>
-              <label htmlFor="URI">URI :</label>
+              <label htmlFor="">URI :</label>
               <input
                 type="text"
                 name="uri"
                 value={sessionState.uri}
                 onChange={onChange}
               />
-              <label htmlFor="display_name">Name :</label>
+              <label>Name :</label>
               <input
                 type="text"
                 name="display_name"
                 value={sessionState.display_name}
                 onChange={onChange}
               />
-              <label htmlFor="password">Password :</label>
+              <label>Password :</label>
               <input
                 type="password"
                 name="password"
