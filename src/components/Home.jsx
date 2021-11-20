@@ -18,13 +18,8 @@ const Home = () => {
   });
 
   const myVideo = React.useRef();
+  const myAudio = React.useRef();
   const userVideo = React.useRef();
-
-  // const configBezoar = {
-  //   sockets: [socket],
-  //   uri: "sip:bezoarl@sip.antisip.com",
-  //   password: "adminadmin",
-  // };
 
   const ua = new JsSIP.UA(config);
   ua.on("connected", (data) => {
@@ -83,7 +78,9 @@ const Home = () => {
     <div className="Home-Container">
       <h1>Home</h1>
       <button onClick={connectToCall}>Make a Call </button>
-      {session && (
+      <video playsInline ref={myVideo} autoPlay style={{ width: "300px" }} />
+      <audio controls ref={myAudio} />
+      {/* {session && (
         <>
           {" "}
           <div> Moi : {session.local_identity.display_name}</div>
@@ -102,7 +99,7 @@ const Home = () => {
           />
           <audio autoPlay id="audioElement" />
         </>
-      )}
+      )} */}
 
       {/* <button onClick={CallIt}>Call</button> */}
     </div>
