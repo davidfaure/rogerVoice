@@ -139,7 +139,7 @@ const Home = () => {
         data.peerconnection.onaddstream = (ev) => {
           console.info("onaddstream from remote - ", ev);
           // myAudio.src = URL.createObjectURL(ev.stream);
-          // myAudio.current.srcObject = ev.stream;
+          myAudio.current.srcObject = ev.stream;
           userVideo.current.srcObject = ev.stream;
           // userVideo.onloadstart = () => {
           //   userVideo.play();
@@ -267,14 +267,17 @@ const Home = () => {
           <video playsInline ref={userVideo} muted autoPlay />
         </div>
       </div>
+      <audio style={{ display: "none" }} autoPlay controls ref={myAudio} />
       <div className="Footer-Container">
         {callAccepted && <button onClick={endCall}>End Call</button>}
       </div>
       {incomingSession && !callAccepted && (
-        <>
+        <div className="Footer-Container-Answer">
           <h1>{callerName} vous appelle !</h1>
-          <button onClick={answerCall}>Answer call</button>
-        </>
+          <button className="AnswerCallButton" onClick={answerCall}>
+            Answer call
+          </button>
+        </div>
       )}
       {!registered && (
         <div className="Register-Container-Background">
