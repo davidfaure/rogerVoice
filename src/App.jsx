@@ -9,6 +9,7 @@ const socket = io("http://localhost:8080");
 
 function App() {
   const [myId, setMyId] = React.useState("");
+  const [chatRoom, setChatRoom] = React.useState();
   const [users, setUsers] = React.useState();
   const [muteVideo, setMutedVideo] = React.useState(false);
   const [muteAudio, setMutedAudio] = React.useState(false);
@@ -21,6 +22,8 @@ function App() {
   const [callEnded, setCallEnded] = React.useState(false);
   const [name, setName] = React.useState("");
   const [callerName, setCallerName] = React.useState("");
+  const [text, setText] = React.useState("");
+  const [messages, setMessages] = React.useState([]);
 
   const myVideo = React.useRef();
   const userVideo = React.useRef();
@@ -34,8 +37,16 @@ function App() {
         myVideo.current.srcObject = stream;
       });
 
-    socket.on("myId", (id) => {
+    socket.on("myId", (id, chatRoom) => {
       setMyId(id);
+      setChatRoom(chatRoom);
+    });
+
+    socket.on("welcome", (data) => {
+      console.log("welcome", data);
+      const copy = messages;
+      copy.push(data);
+      setMessages([...copy]);
     });
 
     socket.on("allUsers", (users) => {
@@ -54,7 +65,27 @@ function App() {
       setCallerName(data.name);
       setCallerSignal(data.signal);
     });
+
+    socket.on("message", (data) => {
+      console.log("message from server", data);
+      const copy = messages;
+      copy.push(data);
+      setMessages([...copy]);
+    });
   }, []);
+
+  const joinRoom = () => {
+    socket.emit("join", { room: chatRoom, userName: name });
+  };
+
+  const sendMessage = () => {
+    if (text !== "") {
+      socket.emit("chat", text, name, chatRoom);
+      setText("");
+    }
+  };
+
+  console.log(messages, "message");
 
   const callUser = (id) => {
     const peer = new Peer({
@@ -139,11 +170,17 @@ function App() {
     setMutedVideo(!muteVideo);
   };
 
+  console.log(chatRoom);
+
   return (
     <div className="App">
       <div className="Video-Container">
         <div className="Video-Container-Title">
-          <h1>Rogervoice Test</h1>
+          {receivingCall && !callAccepted ? (
+            <h1>{callerName} vous appelle...</h1>
+          ) : (
+            <h1>Rogervoice Test</h1>
+          )}
         </div>
         <div className="Video-Frame-Container">
           <div className="Video-Frame-User">
@@ -166,7 +203,13 @@ function App() {
           <div className="Video-Frame-Remote">
             {callAccepted && !callEnded && (
               <>
-                <video playsInline ref={userVideo} autoPlay id="user-video" />
+                <video
+                  playsInline
+                  ref={userVideo}
+                  muted
+                  autoPlay
+                  id="user-video"
+                />
                 <div className="Video-Frame-User-Name">
                   <p>{callerName}</p>
                   <div className="Video-Frame-User-Name-Connected" />
@@ -215,47 +258,82 @@ function App() {
         </div>
       </div>
       <div className="Side-Container">
-        <div>
-          <p>Mon nom :</p>
-          <input
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <CopyToClipboard text={myId}>
-          <button>Copier mon id</button>
-        </CopyToClipboard>
-        <p> mon id : {myId}</p>
-        <p>id de la personne à appeler:</p>
-        <input
-          name="idToCall"
-          value={idToCall}
-          onChange={(e) => setIdToCall(e.target.value)}
-        />
-        <div className="call-button">
-          {callAccepted && !callEnded ? (
-            <button variant="contained" color="secondary" onClick={leaveCall}>
-              End Call
-            </button>
-          ) : (
-            <button
-              color="primary"
-              aria-label="call"
-              onClick={() => callUser(idToCall)}
-            >
-              Call
-            </button>
-          )}
-          {idToCall}
-        </div>
-        <div>
-          {receivingCall && !callAccepted ? (
+        {!callAccepted && (
+          <>
             <div>
-              <h1>{callerName} vous appelle...</h1>
-              <button onClick={answerCall}>Répondre</button>
+              <ul>
+                <li>Ouvrez deux onglets et renseignez un nom</li>
+                <li>Copiez l&apos;ID d&apos;un des onglets</li>
+                <li>Copier l&apos;ID dans l&apos;input ID à appeler</li>
+                <li>
+                  Cliquer sur le bouton appeler et accepter l'appel sur
+                  l&apos;autre onglet
+                </li>
+              </ul>
+              <p className="Side-Container-Label">Mon nom :</p>
+              <input
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
-          ) : null}
+            <CopyToClipboard text={myId}>
+              <button className="Clipboard-Button">Copier mon id</button>
+            </CopyToClipboard>
+            {name && (
+              <button onClick={joinRoom} className="Clipboard-Button">
+                Rejoindre la chat room
+              </button>
+            )}{" "}
+            <p className="Side-Container-Label">ID à appeler:</p>
+            <input
+              name="idToCall"
+              value={idToCall}
+              onChange={(e) => setIdToCall(e.target.value)}
+            />
+            <div className="call-button">
+              {!callAccepted && !callEnded && idToCall && (
+                <button
+                  className="Clipboard-Button-Call"
+                  onClick={() => callUser(idToCall)}
+                >
+                  Appeler
+                </button>
+              )}
+            </div>
+          </>
+        )}
+        <div className="Chat-Message-Container">
+          <div className="Chat-Message">
+            {messages.map((message) => {
+              return (
+                <div
+                  className={
+                    message.username === name ? "Message-Left" : "Message-Right"
+                  }
+                >
+                  <div
+                    className={
+                      message.username === name
+                        ? "Message-Background-Left"
+                        : "Message-Background-Right"
+                    }
+                  >
+                    <p>{message.text}</p>
+                  </div>
+                  {!message.welcome && <span>{message.username}</span>}
+                </div>
+              );
+            })}
+          </div>
+          <div>
+            <input
+              placeholder="Votre message"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <button onClick={sendMessage}>Send</button>
+          </div>
         </div>
       </div>
     </div>

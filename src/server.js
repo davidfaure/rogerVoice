@@ -22,11 +22,39 @@ const io = socket(server, {
 const users = {};
 
 io.on("connection", (socket) => {
+  const chatRoom = "chatRoom";
   if (!users[socket.id]) {
     users[socket.id] = socket.id;
   }
+
+  socket.on("join", (data) => {
+    socket.join(data.room);
+    socket.emit("welcome", {
+      id: socket.id,
+      username: data.userName,
+      text: `Bienvenue ${data.userName}`,
+      welcome: true,
+    });
+
+    socket.broadcast.to(data.room).emit("welcome", {
+      id: socket.id,
+      username: data.userName,
+      text: `${data.userName} a rejoint le chat`,
+      welcome: true,
+    });
+  });
+
+  socket.on("chat", (text, username, roomName) => {
+    io.to(roomName).emit("message", {
+      id: socket.id,
+      username,
+      text,
+      welcome: false,
+    });
+  });
+
   // send my id
-  socket.emit("myId", socket.id);
+  socket.emit("myId", socket.id, chatRoom);
   io.sockets.emit("allUsers", users);
 
   // send a notification that call is ended upon disconnect
