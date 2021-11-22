@@ -258,51 +258,47 @@ function App() {
         </div>
       </div>
       <div className="Side-Container">
-        {!callAccepted && (
-          <>
-            <div>
-              <ul>
-                <li>Ouvrez deux onglets et renseignez un nom</li>
-                <li>Copiez l&apos;ID d&apos;un des onglets</li>
-                <li>Copier l&apos;ID dans l&apos;input ID à appeler</li>
-                <li>
-                  Cliquer sur le bouton appeler et accepter l'appel sur
-                  l&apos;autre onglet
-                </li>
-              </ul>
-              <p className="Side-Container-Label">Mon nom :</p>
-              <input
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <CopyToClipboard text={myId}>
-              <button className="Clipboard-Button">Copier mon id</button>
-            </CopyToClipboard>
-            {name && (
-              <button onClick={joinRoom} className="Clipboard-Button">
-                Rejoindre la chat room
-              </button>
-            )}{" "}
-            <p className="Side-Container-Label">ID à appeler:</p>
-            <input
-              name="idToCall"
-              value={idToCall}
-              onChange={(e) => setIdToCall(e.target.value)}
-            />
-            <div className="call-button">
-              {!callAccepted && !callEnded && idToCall && (
-                <button
-                  className="Clipboard-Button-Call"
-                  onClick={() => callUser(idToCall)}
-                >
-                  Appeler
-                </button>
-              )}
-            </div>
-          </>
-        )}
+        <div>
+          <ul>
+            <li>Ouvrez deux onglets et renseignez un nom</li>
+            <li>Copiez l&apos;ID d&apos;un des onglets</li>
+            <li>Copier l&apos;ID dans l&apos;input ID à appeler</li>
+            <li>
+              Cliquer sur le bouton appeler et accepter l'appel sur l&apos;autre
+              onglet
+            </li>
+          </ul>
+          <p className="Side-Container-Label">Mon nom :</p>
+          <input
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <CopyToClipboard text={myId}>
+          <button className="Clipboard-Button">Copier mon id</button>
+        </CopyToClipboard>
+        {name && (
+          <button onClick={joinRoom} className="Clipboard-Button">
+            Rejoindre la chat room
+          </button>
+        )}{" "}
+        <p className="Side-Container-Label">ID à appeler:</p>
+        <input
+          name="idToCall"
+          value={idToCall}
+          onChange={(e) => setIdToCall(e.target.value)}
+        />
+        <div className="call-button">
+          {!callAccepted && !callEnded && idToCall && (
+            <button
+              className="Clipboard-Button-Call"
+              onClick={() => callUser(idToCall)}
+            >
+              Appeler
+            </button>
+          )}
+        </div>
         <div className="Chat-Message-Container">
           <div className="Chat-Message">
             {messages.map((message) => {
