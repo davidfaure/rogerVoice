@@ -44,6 +44,18 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("typing", (data) => {
+    if (data.typing) {
+      socket.broadcast.emit("isTyping", {
+        text: `${data.name} est en train d'écrire`,
+      });
+    } else {
+      socket.broadcast.emit("isTyping", {
+        text: "",
+      });
+    }
+  });
+
   socket.on("chat", (text, username, roomName) => {
     io.to(roomName).emit("message", {
       id: socket.id,

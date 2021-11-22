@@ -9,7 +9,7 @@ body {
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-family: "Raleway", "Roboto", Arial, Helvetica, sans-serif;
 }
 
 .Video-Container {
@@ -24,12 +24,23 @@ body {
 
 .Video-Container-Title {
   width: 75vw;
-  background-color: #eef2f8;
+  background-color: #f1f4f9;
   height: 10vh;
   border-radius: 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+}
+
+.Video-Container-Title-Input {
+  display: flex;
+  align-items: center;
+}
+
+.Video-Container-Input-Call {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .Side-Container {
@@ -37,7 +48,7 @@ body {
   margin: 1% 2% 1% 1%;
   border-radius: 16px;
   display: flex;
-  background-color: #eef2f8;
+  background-color: #f1f4f9;
   flex-direction: column;
   align-items: center;
   /* justify-content: center; */
@@ -46,7 +57,7 @@ body {
 }
 
 .Video-Frame-Container {
-  background-color: #eef2f8;
+  background-color: #f1f4f9;
   border-radius: 16px;
   width: 75vw;
   height: 70vh;
@@ -74,11 +85,16 @@ input {
 
 .Side-Container-Label {
   font-weight: 600;
+  margin: 5px;
 }
 
 .Side-Container li {
   font-size: 0.9vw;
   text-align: left;
+}
+
+.Video-Container-Title-Logo {
+  width: 30%;
 }
 
 .Video-Frame-User,
@@ -163,6 +179,12 @@ input {
   animation: shakeIt 1s infinite ease-in-out;
 }
 
+.Call-Button-Title {
+  width: 2.5vw;
+  margin: 20px 0px 0px 10px;
+  cursor: pointer;
+}
+
 .End-Button {
   width: 5vw;
   margin: 0px 30px;
@@ -170,7 +192,7 @@ input {
 
 .Video-Frame-Control {
   border-radius: 20px;
-  background-color: #eef2f8;
+  background-color: #f1f4f9;
   width: 75vw;
   height: 10vh;
   display: flex;
@@ -181,8 +203,9 @@ input {
 .Clipboard-Button {
   border: none;
   padding: 0.8em 1em;
-  margin-top: 20px;
-  font-size: 1vw;
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 0.8vw;
   border-radius: 5px;
   background: hsl(225, 100%, 40%);
   color: hsl(225, 100%, 98%);
@@ -193,7 +216,51 @@ input {
   will-change: transform;
   filter: drop-shadow(0 0 0.75rem hsla(225, 98%, 44%, 0.4));
   width: 50%;
+  height: 50%;
   justify-content: center;
+}
+
+.Join-Button {
+  border: none;
+  padding: 0.8em 1em;
+  /* margin-top: 10px;
+  margin-left: 20px; */
+  font-size: 0.8vw;
+  border-radius: 5px;
+  background: hsl(225, 100%, 40%);
+  color: hsl(225, 100%, 98%);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  will-change: transform;
+  filter: drop-shadow(0 0 0.75rem hsla(225, 98%, 44%, 0.4));
+  width: 100%;
+  justify-content: center;
+}
+
+.Send-Message-Container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.Send-Message-Container input {
+  border: 1px solid transparent !important;
+  margin: 0px !important;
+  padding: 0.8em 0.4em;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: inherit;
+  width: 12vw;
+  height: 2vh;
+  box-shadow: 0 16px 48px 0 rgb(0 55 83 / 13%);
+}
+
+.Send-Message-Button {
+  width: 2.9vw;
+  cursor: pointer;
 }
 
 .Clipboard-Button-Call {
@@ -213,35 +280,65 @@ input {
   justify-content: center;
 }
 
+.Chat-Message-Container {
+  width: 100%;
+  height: 80vh;
+}
+
 .Chat-Message {
+  height: 58vh;
   display: flex;
   align-content: flex-start;
   width: 100%;
   flex-direction: column;
+  overflow-y: hidden;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.Chat-Message::-webkit-scrollbar {
+  display: none;
+}
+
+.Side-Container-Join-Button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5vh;
+  margin: 20px;
 }
 
 .Message-Left {
+  display: flex;
+  flex-direction: column;
   align-self: flex-start;
   padding-left: 0.5rem;
   margin-bottom: 5px;
 }
 
 .Message-Right {
+  display: flex;
+  flex-direction: column;
   align-self: flex-end;
   padding-right: 0.5rem;
   margin-bottom: 5px;
+
+  /* margin: 5px 0px; */
 }
 
 .Message-Background-Left {
-  border: 1px solid blue;
+  background-color: blue;
   background-color: blue;
   border-radius: 50px;
-  /* padding: 0.5rem 1rem; */
+  box-shadow: 0 16px 48px 0 rgb(0 55 83 / 13%);
+  padding: 0.2rem;
 }
 
 .Message-Background-Left p {
   margin: 5px !important;
   font-size: 0.8vw;
+  text-align: left !important;
+  font-weight: 600;
   color: white !important;
 }
 
@@ -249,27 +346,60 @@ input {
   font-size: 0.6vw;
   color: #6b6d6d;
   text-align: left;
-  padding-right: 4vw;
+  padding: 2px 0px 0px 5px;
 }
 
 .Message-Background-Right {
-  border: 1px solid rgb(212, 0, 255);
-  background-color: rgb(212, 0, 255);
+  border: 1px solid rgb(180, 0, 255);
+  background-color: rgb(180, 0, 255);
   border-radius: 50px;
-  /* padding: 0.5rem 1rem; */
+  box-shadow: 0 16px 48px 0 rgb(0 55 83 / 13%);
+  padding: 0.2rem;
 }
 
 .Message-Background-Right p {
   margin: 5px !important;
   font-size: 0.8vw;
   color: white !important;
+  font-weight: 600;
+  text-align: right !important;
 }
 
 .Message-Right span {
   font-size: 0.6vw;
   color: #6b6d6d;
   text-align: right;
-  padding-left: 4vw;
+  padding: 2px 5px 0px 0px;
+}
+
+.Is-Typing-Message {
+  color: #6b6d6d;
+  margin: 0px;
+  padding-bottom: 2px;
+  font-size: 0.9vw !important;
+}
+
+.Side-Container-Instructions {
+  margin: 2%;
+  border-radius: 16px;
+  background-color: #0065f9;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+}
+
+.Side-Container-Instructions ul {
+  width: 80%;
+}
+
+.Side-Container-Instructions li {
+  font-size: 0.8vw;
+  font-weight: 600;
+  color: white;
+}
+
+.Side-Container h2 {
+  margin: 1%;
 }
 
 @keyframes shakeIt {

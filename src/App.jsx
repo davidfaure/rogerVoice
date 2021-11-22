@@ -8,6 +8,7 @@ import * as images from "./assets/img/index";
 const socket = io("http://localhost:8080");
 
 function App() {
+  let timeOut = undefined;
   const [myId, setMyId] = React.useState("");
   const [chatRoom, setChatRoom] = React.useState();
   const [users, setUsers] = React.useState();
@@ -24,10 +25,17 @@ function App() {
   const [callerName, setCallerName] = React.useState("");
   const [text, setText] = React.useState("");
   const [messages, setMessages] = React.useState([]);
+  const [typing, setTyping] = React.useState(false);
+  const [isTyping, setIsTyping] = React.useState(false);
 
   const myVideo = React.useRef();
   const userVideo = React.useRef();
   const connectionRef = React.useRef();
+
+  const stopTyping = () => {
+    setTyping(false);
+    socket.emit("typing", { typing: false });
+  };
 
   React.useEffect(() => {
     navigator.mediaDevices
@@ -43,7 +51,6 @@ function App() {
     });
 
     socket.on("welcome", (data) => {
-      console.log("welcome", data);
       const copy = messages;
       copy.push(data);
       setMessages([...copy]);
@@ -51,6 +58,11 @@ function App() {
 
     socket.on("allUsers", (users) => {
       setUsers(users);
+    });
+
+    socket.on("isTyping", (data) => {
+      console.log("TYPING", data);
+      setIsTyping(data.text);
     });
 
     socket.on("stopCall", () => {
@@ -88,44 +100,46 @@ function App() {
   console.log(messages, "message");
 
   const callUser = (id) => {
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream: stream,
-      config: {
-        iceServers: [
-          { urls: "stun:stun.l.google.com:19302" },
-          { urls: "stun:stun.services.mozilla.com" },
-          { urls: "stun:stun.stunprotocol.org:3478" },
-          { url: "stun:stun.l.google.com:19302" },
-          { url: "stun:stun.services.mozilla.com" },
-          { url: "stun:stun.stunprotocol.org:3478" },
-        ],
-      },
-    });
-
-    peer.on("signal", (data) => {
-      socket.emit("callUser", {
-        userToCall: id,
-        signalData: data,
-        from: myId,
-        name: name,
+    if (idToCall) {
+      const peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream: stream,
+        config: {
+          iceServers: [
+            { urls: "stun:stun.l.google.com:19302" },
+            { urls: "stun:stun.services.mozilla.com" },
+            { urls: "stun:stun.stunprotocol.org:3478" },
+            { url: "stun:stun.l.google.com:19302" },
+            { url: "stun:stun.services.mozilla.com" },
+            { url: "stun:stun.stunprotocol.org:3478" },
+          ],
+        },
       });
-    });
 
-    peer.on("stream", (stream) => {
-      if (userVideo.current) {
-        userVideo.current.srcObject = stream;
-      }
-    });
+      peer.on("signal", (data) => {
+        socket.emit("callUser", {
+          userToCall: id,
+          signalData: data,
+          from: myId,
+          name: name,
+        });
+      });
 
-    socket.on("callAccepted", (signal, userName) => {
-      setCallAccepted(true);
-      setCallerName(userName);
-      peer.signal(signal);
-    });
+      peer.on("stream", (stream) => {
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+      });
 
-    connectionRef.current = peer;
+      socket.on("callAccepted", (signal, userName) => {
+        setCallAccepted(true);
+        setCallerName(userName);
+        peer.signal(signal);
+      });
+
+      connectionRef.current = peer;
+    }
   };
 
   const answerCall = () => {
@@ -176,11 +190,47 @@ function App() {
     <div className="App">
       <div className="Video-Container">
         <div className="Video-Container-Title">
-          {receivingCall && !callAccepted ? (
-            <h1>{callerName} vous appelle...</h1>
-          ) : (
-            <h1>Rogervoice Test</h1>
-          )}
+          <div className="Video-Container-Title-Logo">
+            <h2>Rogervoice Test</h2>
+          </div>
+          <div>
+            {receivingCall && !callAccepted && (
+              <h2>{callerName} vous appelle...</h2>
+            )}
+          </div>
+          <div className="Video-Container-Title-Input">
+            <div>
+              <p className="Side-Container-Label">Mon nom :</p>
+              <input
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <CopyToClipboard text={myId}>
+              <button className="Clipboard-Button">Copier mon id</button>
+            </CopyToClipboard>
+          </div>
+          <div className="Video-Container-Input-Call">
+            <div>
+              <p className="Side-Container-Label">ID à appeler:</p>
+              <input
+                name="idToCall"
+                value={idToCall}
+                onChange={(e) => setIdToCall(e.target.value)}
+              />
+            </div>
+            <div className="call-button">
+              <img
+                src={images.acceptCall}
+                alt="acceptCall"
+                onClick={() => callUser(idToCall)}
+                onKeyDown={() => {}}
+                role="presentation"
+                className="Call-Button-Title"
+              />
+            </div>
+          </div>
         </div>
         <div className="Video-Frame-Container">
           <div className="Video-Frame-User">
@@ -258,7 +308,8 @@ function App() {
         </div>
       </div>
       <div className="Side-Container">
-        <div>
+        <h2>Chat Room</h2>
+        <div className="Side-Container-Instructions">
           <ul>
             <li>Ouvrez deux onglets et renseignez un nom</li>
             <li>Copiez l&apos;ID d&apos;un des onglets</li>
@@ -268,34 +319,11 @@ function App() {
               onglet
             </li>
           </ul>
-          <p className="Side-Container-Label">Mon nom :</p>
-          <input
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
         </div>
-        <CopyToClipboard text={myId}>
-          <button className="Clipboard-Button">Copier mon id</button>
-        </CopyToClipboard>
-        {name && (
-          <button onClick={joinRoom} className="Clipboard-Button">
-            Rejoindre la chat room
-          </button>
-        )}{" "}
-        <p className="Side-Container-Label">ID à appeler:</p>
-        <input
-          name="idToCall"
-          value={idToCall}
-          onChange={(e) => setIdToCall(e.target.value)}
-        />
-        <div className="call-button">
-          {!callAccepted && !callEnded && idToCall && (
-            <button
-              className="Clipboard-Button-Call"
-              onClick={() => callUser(idToCall)}
-            >
-              Appeler
+        <div className="Side-Container-Join-Button">
+          {name && (
+            <button onClick={joinRoom} className="Join-Button">
+              Rejoindre la chat room
             </button>
           )}
         </div>
@@ -322,13 +350,30 @@ function App() {
               );
             })}
           </div>
-          <div>
+          <span className="Is-Typing-Message">{isTyping}</span>
+          <div className="Send-Message-Container">
             <input
               placeholder="Votre message"
               value={text}
               onChange={(e) => setText(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  clearTimeout(timeOut);
+                  sendMessage();
+                } else {
+                  setTyping(true);
+                  socket.emit("typing", { name, typing: true });
+                  clearTimeout(timeOut);
+                  timeOut = setTimeout(stopTyping, 3000);
+                }
+              }}
             />
-            <button onClick={sendMessage}>Send</button>
+            <img
+              src={images.sendButton}
+              alt="sendButton"
+              onClick={sendMessage}
+              className="Send-Message-Button"
+            />
           </div>
         </div>
       </div>
