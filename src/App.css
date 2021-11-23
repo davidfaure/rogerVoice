@@ -1,15 +1,160 @@
+@font-face {
+  font-family: "CoHeadlineW01-Regular";
+  src: url("//db.onlinewebfonts.com/t/09ac81b561d9a4e2834c7bb4c669cb85.eot");
+  src: url("//db.onlinewebfonts.com/t/09ac81b561d9a4e2834c7bb4c669cb85.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/09ac81b561d9a4e2834c7bb4c669cb85.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/09ac81b561d9a4e2834c7bb4c669cb85.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/09ac81b561d9a4e2834c7bb4c669cb85.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/09ac81b561d9a4e2834c7bb4c669cb85.svg#CoHeadlineW01-Regular")
+      format("svg");
+}
+
 .App {
   text-align: center;
   height: 100vh;
   width: 100vw;
   display: flex;
+  justify-content: center;
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
-  font-family: "Raleway", "Roboto", Arial, Helvetica, sans-serif;
+  font-family: "CoHeadlineW01-Regular", "Raleway", "Roboto", Arial, Helvetica,
+    sans-serif;
+}
+
+.Logo {
+  border-radius: 50%;
+  width: 5vw;
+  margin: 1%;
+}
+
+.Logo-Header {
+  border-radius: 50%;
+  width: 3vw;
+}
+
+.Header-Left {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 15vw;
+}
+
+.Header-Left h2 {
+  font-size: 1.2vw;
+}
+
+.Header-Right {
+  height: 10vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #f1f4f9;
+  border-radius: 16px;
+  width: 60vw;
+}
+
+.Video-Container-Title {
+  width: 75vw;
+  /* background-color: #f1f4f9; */
+  height: 10vh;
+  display: flex;
+  align-items: center;
+}
+
+.Video-Container-Title-Logo {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 20vw;
+  height: 10vh;
+}
+
+.Video-Container-Title-Logo h2 {
+  font-size: 1vw;
+}
+
+.Video-Container-Title-Input {
+  display: flex;
+  align-items: center;
+  width: 20vw;
+  height: 10vh;
+}
+
+.Video-Container-Calling {
+  width: 20vw;
+  height: 10vh;
+}
+
+.Video-Container-Input-Call {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 20vw;
+  height: 10vh;
+}
+
+.Video-Container-Input-Call input {
+  border: 1px solid #a0a1a1;
+  padding: 0.8em 0.4em;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: inherit;
+  width: 12vw;
+  height: 2vh;
+  margin: 0px;
+}
+
+.Login {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Login-Container {
+  width: 70vw;
+  height: 70vh;
+  box-shadow: 0 1px 20px 0 #6d8dad46;
+  /* box-shadow: #6d8dad46 0px 48px 100px 0px; */
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.Login-Container-Title h1 {
+  font-size: 2vw;
+  margin: 0px;
+}
+
+.Login-Container-Instructions {
+  padding: 1%;
+  border-radius: 16px;
+  background-color: #0065f9;
+  background-color: #3c5cc7;
+  display: flex;
+  align-items: center;
+}
+
+.Login-Container-Instructions ul {
+  width: 100%;
+}
+
+.Login-Container-Instructions li {
+  font-size: 0.8vw;
+  font-weight: 600;
+  color: white;
+  text-align: left;
 }
 
 .Video-Container {
@@ -20,40 +165,6 @@ body {
   width: 80vw;
   background-color: #f7fcfe;
   background-color: #fff;
-}
-
-.Video-Container-Title {
-  width: 75vw;
-  background-color: #f1f4f9;
-  height: 10vh;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.Video-Container-Title-Input {
-  display: flex;
-  align-items: center;
-}
-
-.Video-Container-Input-Call {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.Side-Container {
-  width: 20vw;
-  margin: 1% 2% 1% 1%;
-  border-radius: 16px;
-  display: flex;
-  background-color: #f1f4f9;
-  flex-direction: column;
-  align-items: center;
-  /* justify-content: center; */
-  /* box-shadow: rgba(0, 0, 0, 0.19) 0px 5px 10px, rgba(0, 0, 0, 0.23) 0px 6px 6px; */
-  /* box-shadow: 0 16px 48px 0 rgb(0 55 83 / 13%); */
 }
 
 .Video-Frame-Container {
@@ -81,20 +192,6 @@ input {
   width: 12vw;
   height: 2vh;
   /* -webkit-appearance: none; */
-}
-
-.Side-Container-Label {
-  font-weight: 600;
-  margin: 5px;
-}
-
-.Side-Container li {
-  font-size: 0.9vw;
-  text-align: left;
-}
-
-.Video-Container-Title-Logo {
-  width: 30%;
 }
 
 .Video-Frame-User,
@@ -181,7 +278,6 @@ input {
 
 .Call-Button-Title {
   width: 2.5vw;
-  margin: 20px 0px 0px 10px;
   cursor: pointer;
 }
 
@@ -202,12 +298,10 @@ input {
 
 .Clipboard-Button {
   border: none;
-  padding: 0.8em 1em;
-  margin-top: 10px;
-  margin-left: 20px;
+  padding: 0.8em;
   font-size: 0.8vw;
   border-radius: 5px;
-  background: hsl(225, 100%, 40%);
+  background: #3c5cc7;
   color: hsl(225, 100%, 98%);
   font-weight: 600;
   display: flex;
@@ -222,14 +316,13 @@ input {
 
 .Join-Button {
   border: none;
-  padding: 0.8em 1em;
-  /* margin-top: 10px;
-  margin-left: 20px; */
+  padding: 0.8em;
   font-size: 0.8vw;
   border-radius: 5px;
-  background: hsl(225, 100%, 40%);
+  background: #3c5cc7;
   color: hsl(225, 100%, 98%);
   font-weight: 600;
+  font-family: "CoHeadlineW01-Regular";
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -244,6 +337,7 @@ input {
   justify-content: space-around;
   align-items: center;
   padding: 10px;
+  height: 5%;
 }
 
 .Send-Message-Container input {
@@ -280,13 +374,35 @@ input {
   justify-content: center;
 }
 
+.Side-Container {
+  width: 20vw;
+  margin: 1% 2% 1% 1%;
+  border-radius: 16px;
+  display: flex;
+  background-color: #f1f4f9;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  /* box-shadow: rgba(0, 0, 0, 0.19) 0px 5px 10px, rgba(0, 0, 0, 0.23) 0px 6px 6px; */
+  /* box-shadow: 0 16px 48px 0 rgb(0 55 83 / 13%); */
+}
+
+.Side-Container-Title {
+  height: 6%;
+  width: 20vw;
+}
+
+.Side-Container-Title h2 {
+  font-size: 1.2vw;
+}
+
 .Chat-Message-Container {
   width: 100%;
-  height: 80vh;
+  height: 95%;
 }
 
 .Chat-Message {
-  height: 58vh;
+  height: 90%;
   display: flex;
   align-content: flex-start;
   width: 100%;
@@ -377,25 +493,7 @@ input {
   margin: 0px;
   padding-bottom: 2px;
   font-size: 0.9vw !important;
-}
-
-.Side-Container-Instructions {
-  margin: 2%;
-  border-radius: 16px;
-  background-color: #0065f9;
-  height: 15vh;
-  display: flex;
-  align-items: center;
-}
-
-.Side-Container-Instructions ul {
-  width: 80%;
-}
-
-.Side-Container-Instructions li {
-  font-size: 0.8vw;
-  font-weight: 600;
-  color: white;
+  height: 5% !important;
 }
 
 .Side-Container h2 {

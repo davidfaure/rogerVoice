@@ -5,3 +5,4 @@ export { default as stopMic } from "./stopMic.svg";
 export { default as activeVideo } from "./activeVideo.svg";
 export { default as stopVideo } from "./stopVideo.svg";
 export { default as sendButton } from "./sendButton.svg";
+export { default as logoRogervoice } from "./Profil_picture_rogervoice_HD.png";
