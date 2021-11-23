@@ -3,7 +3,7 @@ const http = require("http");
 const socket = require("socket.io");
 const cors = require("cors");
 const app = express();
-const port = 8080;
+const port = 8080; // usually in .env but not used here for test
 
 app.use(cors());
 
@@ -14,8 +14,6 @@ const io = socket(server, {
     origin: "*",
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
-    // allowedHeaders: ["my-custom-header"],
-    // credentials: true,
   },
 });
 
@@ -67,7 +65,6 @@ io.on("connection", (socket) => {
 
   // send my id
   socket.emit("myId", socket.id, chatRoom);
-  io.sockets.emit("allUsers", users);
 
   // send a notification that call is ended upon disconnect
   socket.on("disconnect", () => {

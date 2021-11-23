@@ -180,8 +180,8 @@ const Dashboard = ({ socket, name, myId }) => {
             </>
           )}
         </div>
-        <div className="Video-Frame-Remote">
-          {callAccepted && !callEnded && (
+        {callAccepted && !callEnded && (
+          <div className="Video-Frame-Remote">
             <>
               <video
                 playsInline
@@ -190,51 +190,62 @@ const Dashboard = ({ socket, name, myId }) => {
                 autoPlay
                 id="user-video"
               />
-              <div className="Video-Frame-User-Name">
+              <div className="Video-Frame-User-Name-Remote">
                 <p>{callerName}</p>
-                <div className="Video-Frame-User-Name-Connected" />
               </div>
             </>
-          )}
-        </div>
+          </div>
+        )}
       </div>
       <div className="Video-Frame-Control">
-        <img
-          src={muteAudio ? images.stopMic : images.activeMic}
-          alt="Mute-Unmute"
-          onClick={muteMe}
-          onKeyDown={() => {}}
-          role="presentation"
-          className="Audio-Button"
-        />
-        {receivingCall && !callAccepted && (
+        <div className="Video-Frame-Control-Detail">
           <img
-            src={images.acceptCall}
-            alt="acceptCall"
-            onClick={answerCall}
+            src={muteAudio ? images.stopMic : images.activeMic}
+            alt="Mute-Unmute"
+            onClick={muteMe}
             onKeyDown={() => {}}
             role="presentation"
-            className="Call-Button"
+            className="Audio-Button"
           />
+          <p>Micro</p>
+        </div>
+        {receivingCall && !callAccepted && (
+          <div className="Video-Frame-Control-Detail">
+            <img
+              src={images.acceptCall}
+              alt="acceptCall"
+              onClick={answerCall}
+              onKeyDown={() => {}}
+              role="presentation"
+              className="Call-Button"
+            />
+            <p>Répondre</p>
+          </div>
         )}
         {callAccepted && !callEnded && (
+          <div className="Video-Frame-Control-Detail">
+            <img
+              src={images.endCall}
+              alt="endCall"
+              onClick={leaveCall}
+              onKeyDown={() => {}}
+              role="presentation"
+              className="End-Button"
+            />
+            <p>Raccrocher</p>
+          </div>
+        )}
+        <div className="Video-Frame-Control-Detail">
           <img
-            src={images.endCall}
-            alt="endCall"
-            onClick={leaveCall}
+            src={muteVideo ? images.stopVideo : images.activeVideo}
+            alt="Mute-Unmute"
+            onClick={stopVideo}
             onKeyDown={() => {}}
             role="presentation"
-            className="End-Button"
+            className="Video-Button"
           />
-        )}
-        <img
-          src={muteVideo ? images.stopVideo : images.activeVideo}
-          alt="Mute-Unmute"
-          onClick={stopVideo}
-          onKeyDown={() => {}}
-          role="presentation"
-          className="Video-Button"
-        />
+          <p>Caméra</p>
+        </div>
       </div>
     </div>
   );

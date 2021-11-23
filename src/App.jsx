@@ -1,62 +1,24 @@
 import React from "react";
 import "./App.css";
 import { io } from "socket.io-client";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import Peer from "simple-peer";
 import * as images from "./assets/img/index";
 import Dashboard from "./components/Dashboard";
 import ChatRoom from "./components/ChatRoom";
 
 const socket = io("http://localhost:8080");
+// usually in .env but not used here for test simplicity
 
 function App() {
-  let timeOut = undefined;
-  const [login, setLogin] = React.useState(true);
+  const [login, setLogin] = React.useState(false);
   const [myId, setMyId] = React.useState("");
   const [chatRoom, setChatRoom] = React.useState();
-  const [users, setUsers] = React.useState();
-  const [name, setName] = React.useState("David Faure");
+  const [name, setName] = React.useState("");
 
   React.useEffect(() => {
     socket.on("myId", (id, chatRoom) => {
       setMyId(id);
       setChatRoom(chatRoom);
     });
-
-    // socket.on("welcome", (data) => {
-    //   const copy = messages;
-    //   copy.push(data);
-    //   setMessages([...copy]);
-    // });
-
-    socket.on("allUsers", (users) => {
-      setUsers(users);
-    });
-
-    // socket.on("isTyping", (data) => {
-    //   console.log("TYPING", data);
-    //   setIsTyping(data.text);
-    // });
-
-    // socket.on("stopCall", () => {
-    //   console.log("call ended");
-    //   setCallEnded(true);
-    //   window.location.reload();
-    // });
-
-    // socket.on("callUser", (data) => {
-    //   setReceivingCall(true);
-    //   setCaller(data.from);
-    //   setCallerName(data.name);
-    //   setCallerSignal(data.signal);
-    // });
-
-    // socket.on("message", (data) => {
-    //   console.log("message from server", data);
-    //   const copy = messages;
-    //   copy.push(data);
-    //   setMessages([...copy]);
-    // });
   }, []);
 
   const joinRoom = () => {
@@ -64,19 +26,17 @@ function App() {
     setLogin(true);
   };
 
-  // const sendMessage = () => {
-  //   if (text !== "") {
-  //     socket.emit("chat", text, name, chatRoom);
-  //     setText("");
-  //   }
-  // };
-
   return (
     <div className="App">
       {login ? (
         <>
           <Dashboard socket={socket} name={name} myId={myId} />
-          <ChatRoom socket={socket} name={name} myId={myId} />
+          <ChatRoom
+            socket={socket}
+            name={name}
+            myId={myId}
+            chatRoom={chatRoom}
+          />
         </>
       ) : (
         <div className="Login">

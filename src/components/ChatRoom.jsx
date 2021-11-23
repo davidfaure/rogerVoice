@@ -35,6 +35,7 @@ const ChatRoom = ({ name, socket, chatRoom, myId }) => {
 
   const sendMessage = () => {
     if (text !== "") {
+      console.log("je suis là", text, name, chatRoom);
       socket.emit("chat", text, name, chatRoom);
       setText("");
     }
@@ -63,12 +64,18 @@ const ChatRoom = ({ name, socket, chatRoom, myId }) => {
                 >
                   <p>{message.text}</p>
                 </div>
-                {!message.welcome && <span>{message.username}</span>}
+                {!message.welcome && (
+                  <span>
+                    {message.username === name ? "Vous" : message.username}
+                  </span>
+                )}
               </div>
             );
           })}
         </div>
-        <span className="Is-Typing-Message">{isTyping}</span>
+        <div className="Is-Typing-Message">
+          <span>{isTyping}</span>
+        </div>
         <div className="Send-Message-Container">
           <input
             placeholder="Votre message"
