@@ -88,6 +88,9 @@ body {
 }
 
 .Video-Container-Calling {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20vw;
   height: 10vh;
 }
@@ -310,6 +313,31 @@ input {
 .Call-Button-Title {
   width: 3vw;
   cursor: pointer;
+}
+
+.Call-Button-Title:hover,
+.Audio-Button:hover,
+.Video-Button:hover,
+.End-Button:hover,
+.Call-Button:hover,
+.Clipboard-Button:hover,
+.Send-Message-Button:hover,
+.Join-Button:hover,
+.Clipboard-Button:hover {
+  transform: scale(1.1);
+  transition: ease-in-out 0.2s;
+}
+
+.Call-Button-Title:active,
+.Audio-Button:active,
+.Video-Button:active,
+.End-Button:active,
+.Call-Button:active,
+.Clipboard-Button:active,
+.Send-Message-Button:active,
+.Join-Button:active,
+.Clipboard-Button:active {
+  transform: translateY(4px);
 }
 
 .Video-Frame-Control {
