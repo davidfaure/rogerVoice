@@ -3,16 +3,7 @@ import JsSIP from "jssip";
 import "./Home.css";
 
 const Home = () => {
-  // const socket = new JsSIP.WebSocketInterface("wss://sip.antisip.com:4443");
-  // socket.via_transport = "tcp";
-  // const config = {
-  //   sockets: [socket],
-  //   uri: "sip:david33@sip.antisip.com",
-  //   password: "adminadmin",
-  //   stun: "stun.antisip.com",
-  //   display_name: "David F",
-  //   register: true,
-  // };
+  let outgoingSession = null;
 
   const [sessionState, setSessionState] = React.useState({
     uri: "",
@@ -22,10 +13,6 @@ const Home = () => {
   });
 
   const [callerName, setCallerName] = React.useState("");
-
-  let outgoingSession = null;
-
-  const [stream, setStream] = React.useState();
   const [incomingSession, setIncomingSession] = React.useState();
   const [currentSession, setCurrentSession] = React.useState();
   const [callData, setCallData] = React.useState();
@@ -60,17 +47,10 @@ const Home = () => {
     const userAgent = new JsSIP.UA(config);
 
     userAgent.on("registered", (data) => {
-      console.info(
-        "registered: ",
-        data.response.status_code,
-        ",",
-        data.response.reason_phrase
-      );
       setRegistered(true);
     });
 
     userAgent.on("registrationFailed", (data) => {
-      console.log("registrationFailed, ", data);
       setRegisteredError(true);
     });
 
@@ -83,11 +63,8 @@ const Home = () => {
       setCallData(data);
       if (data.originator === "remote") {
         //incoming call
-        console.info("incomingSession, answer the call");
-        console.log("NAME", data.request.from.display_name);
         setCallerName(data.request.from.display_name);
         setIncomingSession(data.session);
-        //Answer the incoming conversation. This method only applies to incoming sessions.
         // data.session.answer({
         //   mediaConstraints: { audio: true, video: true },
         //   // 'mediaStream': localStream
@@ -102,7 +79,6 @@ const Home = () => {
         });
       }
 
-      //Fired when accepting a call
       data.session.on("accepted", (data) => {
         console.info("onAccepted - ", data);
         if (data.originator === "remote" && currentSession === null) {
@@ -111,7 +87,7 @@ const Home = () => {
           console.info("setCurrentSession - ", currentSession);
         }
       });
-      //Fire after confirming the call
+
       data.session.on("confirmed", (data) => {
         console.info("onConfirmed - ", data);
         if (data.originator === "remote" && currentSession === null) {
@@ -122,39 +98,25 @@ const Home = () => {
         setCallAccepted(true);
       });
       data.session.on("sdp", (data) => {
-        // console.info("onSDP, type - ", data.type, " sdp - ", data.sdp);
-        //data.sdp = data.sdp.replace('UDP/TLS/RTP/SAVPF', 'RTP/SAVPF');
-        //console.info('onSDP, changed sdp - ', data.sdp);
+        data.sdp = data.sdp.replace("UDP/TLS/RTP/SAVPF", "RTP/SAVPF");
       });
-      //Fired when receiving or generating a 1XX SIP response (>100) to an invitation request. This event is triggered before SDP processing (if it exists), so that it can be fine-tuned when needed, or even deleted by deleting the body of the response parameter in the data object
       data.session.on("progress", function (data) {
         console.info("onProgress - ", data.originator);
         if (data.originator === "remote") {
           console.info("onProgress, response - ", data.response);
         }
       });
-      //Fire after creating a basic RTCPeerConnection. The application has the opportunity to change the peerconnection by adding RTCDataChannel or setting the corresponding event listener on the peerconnection.
       data.session.on("peerconnection", (data) => {
-        console.info("onPeerconnection - ", data.peerconnection);
         data.peerconnection.onaddstream = (ev) => {
-          console.info("onaddstream from remote - ", ev);
-          // myAudio.src = URL.createObjectURL(ev.stream);
           myAudio.current.srcObject = ev.stream;
           userVideo.current.srcObject = ev.stream;
-          // userVideo.onloadstart = () => {
-          //   userVideo.play();
-          // };
 
           const interval = setInterval(() => {
             if (!userVideo.videoWidth) {
               return;
             }
-            //stage.appendChild(videoView);
             clearInterval(interval);
           }, 1000 / 50);
-          // myAudio.onloadstart = () => {
-          //   myAudio.play();
-          // };
         };
       });
       userAgent.on("newMessage", (data) => {
@@ -164,7 +126,6 @@ const Home = () => {
           console.info("onNewMessage , IncomingRequest - ", data.request);
         }
       });
-      console.info("call register");
     });
     userAgent.start();
     setUserAgent(userAgent);
@@ -176,16 +137,10 @@ const Home = () => {
         .getUserMedia({ audio: true, video: true })
         .then(function success(stream) {
           myVideo.current.srcObject = stream;
-          // document.body.addEventListener("click", function () {
-          //   myVideo.play();
-          // });
-          // myVideo.play();
-          // wait until the video stream is ready
           const interval = setInterval(() => {
             if (!myVideo.videoWidth) {
               return;
             }
-            //stage.appendChild(videoView);
             clearInterval(interval);
           }, 1000 / 50);
         })
@@ -217,7 +172,6 @@ const Home = () => {
     },
     eventHandlers: eventHandlers,
   };
-  const [session, setSession] = React.useState();
 
   const connectToCall = () => {
     outgoingSession = ua.call(sessionState.uriToCall, options);
@@ -234,12 +188,7 @@ const Home = () => {
       // mediaStream: localStream,
     });
     setCallAccepted(true);
-    callData.session.connection.addEventListener("addstream", (event) => {
-      console.log("DEBUG: addstream............");
-    });
   };
-
-  console.log(callAccepted, "call");
 
   const onChange = (e) => {
     const { name, value } = e.target;

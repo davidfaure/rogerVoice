@@ -183,7 +183,6 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  border: 1px solid red;
 }
 
 .Video-Frame-User-Solo {
@@ -193,7 +192,6 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  border: 1px solid red;
 }
 
 .Video-Frame-Remote {
@@ -203,7 +201,6 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  border: 1px solid red;
 }
 
 .Video-Frame-User video,

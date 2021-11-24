@@ -1,5 +1,4 @@
 import "./App.css";
-import Room from "./components/Room";
 import Home from "./components/Home";
 
 function App() {
