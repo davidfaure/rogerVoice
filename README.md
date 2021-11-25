@@ -1,70 +1,122 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Rogervoice Technical test
 
-## Available Scripts
+Create a small React app that allows to communicate over SIP and WebRTC.
 
-In the project directory, you can run:
 
-### `yarn start`
+## IMPORTANT
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Please note that I've made this test in 2 sections.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**Master branch:** Basic react App with SIP account, JsSIP, WebRTC for audio call and video call.
+**Develop branch:** React app with WebRTC and socket.io, video & audio call, chat app.
+# Master Branch
 
-### `yarn test`
+On master branch I've used JsSIP and WebRTC to realize the test.
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone the project
 
-### `yarn build`
+```bash
+git clone https://github.com/davidfaure/rogerVoice
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Go to the project directory
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+cd rogerVoice
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install dependencies
 
-### `yarn eject`
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Start the server
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm start
+```
+    
+## Tech Stack
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+**Client:** React, JsSIP, WebRTC
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Develop Branch
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+On develop branch I've used socket.io and WebRTC to realize the test.
+## Installation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Clone the project if not already done
 
-### Code Splitting
+```bash
+git clone https://github.com/davidfaure/rogerVoice
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Go to the project directory
 
-### Analyzing the Bundle Size
+```bash
+cd rogerVoice
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Pull the develop branch
 
-### Making a Progressive Web App
+```bash
+git pull
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Go to the develop branch
 
-### Advanced Configuration
+```bash
+git checkout develop
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Install dependencies
 
-### Deployment
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Start the server and the client at same time
 
-### `yarn build` fails to minify
+```bash
+npm run dev
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+if it's not working :
+
+Open a first terminal tab and run :
+
+```bash
+npm run serverNode
+```
+
+Open a second terminal tab and run :
+
+```bash
+npm start
+```
+## Tech
+
+**Client:** React, socket.io, WebRTC
+
+**Server:** nodeJs, socket.io
+
+**Test:** Jest
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
+```
+
+
+## Authors
+
+David Faure - [Portfolio](https://davidfaure.io/)
+
+David Faure - [GitHub](https://github.com/davidfaure/)
+
