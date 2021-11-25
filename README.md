@@ -9,7 +9,9 @@ Create a small React app that allows to communicate over SIP and WebRTC.
 Please note that I've made this test in 2 sections.
 
 **Master branch:** Basic react App with SIP account, JsSIP, WebRTC for audio call and video call.
+
 **Develop branch:** React app with WebRTC and socket.io, video & audio call, chat app.
+
 # Master Branch
 
 On master branch I've used JsSIP and WebRTC to realize the test.
