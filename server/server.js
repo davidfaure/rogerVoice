@@ -1,11 +1,12 @@
+const path = require("path");
 const express = require("express");
 const http = require("http");
 const socket = require("socket.io");
-const cors = require("cors");
 const app = express();
-const port = 8080; // usually in .env but not used here for test
+const port = process.env.PORT || 8080; // usually in .env but not used here for test
 
-app.use(cors());
+const buildPath = path.join(__dirname, "..", "build");
+app.use(express.static(buildPath));
 
 const server = http.createServer(app);
 
