@@ -6,6 +6,7 @@ small react app to call and speak to your friend
 ## Tech Stack
 
 **Client:** React, WebRTC
+
 **Server:** node.JS, socket.io
 
 ## Authors
