@@ -43,7 +43,7 @@ function App() {
           <div className="Login-Container">
             <div className="Login-Container-Title">
               <img src={images.logoRogervoice} alt="logo" className="Logo" />
-              <h1>Rogervoice Test</h1>
+              <h1>Chat Voice App</h1>
             </div>
             <div>
               <p className="Side-Container-Label">Mon nom :</p>

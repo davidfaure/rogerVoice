@@ -130,7 +130,7 @@ const Dashboard = ({ socket, name, myId }) => {
       <div className="Video-Container-Title">
         <div className="Header-Left">
           <img src={images.logoRogervoice} alt="logo" className="Logo-Header" />
-          <h2>Rogervoice</h2>
+          <h2>Chat Voice App</h2>
         </div>
         <div className="Header-Right">
           <div className="Video-Container-Title-Logo">
