@@ -5,7 +5,7 @@ import * as images from "./assets/img/index";
 import Dashboard from "./components/Dashboard";
 import ChatRoom from "./components/ChatRoom";
 
-const socket = io("http://localhost:8080");
+const socket = io(process.env.DOKKU_API_END_POINT);
 // usually in .env but not used here for test simplicity
 
 function App() {
