@@ -4,8 +4,9 @@ import { io } from "socket.io-client";
 import * as images from "./assets/img/index";
 import Dashboard from "./components/Dashboard";
 import ChatRoom from "./components/ChatRoom";
+import { BASE_API_URL } from "./utils/constants";
 
-const socket = io(process.env.DOKKU_API_END_POINT);
+const socket = io(BASE_API_URL);
 // usually in .env but not used here for test simplicity
 
 function App() {
